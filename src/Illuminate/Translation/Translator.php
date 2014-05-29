@@ -89,7 +89,7 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface {
 		// If the line doesn't exist, we will return back the key which was requested as
 		// that will be quick to spot in the UI if language keys are wrong or missing
 		// from the application's language files. Otherwise we can return the line.
-		if ( ! isset($line)) return $key;
+		if ( ! isset($line)) return $this->getKeyWithReplacements($key, $replace);
 
 		return $line;
 	}
@@ -149,6 +149,26 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface {
 		{
 			return mb_strlen($r) * -1;
 		});
+	}
+        
+        /**
+	 * Get they translation key with additional information of the avaiable
+         * replacements
+	 *
+         * @param  string $key
+	 * @param  array  $replace
+	 * @return string
+	 */
+	protected function getKeyWithReplacements($key, array $replace)
+	{
+            $intermediateArray = array();
+            
+            foreach($replace as $replaceKey => $value)
+            {
+                    $intermediateArray[] = ':' . $replaceKey . ' => ' . $value;
+            }
+            
+            return $key . ' [' . implode(', ', $intermediateArray) . ']';
 	}
 
 	/**
