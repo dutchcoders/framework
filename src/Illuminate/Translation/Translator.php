@@ -161,6 +161,8 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface {
 	 */
 	protected function getKeyWithReplacements($key, array $replace)
 	{
+            if(empty($replace)) return $key;
+            
             $intermediateArray = array();
             
             foreach($replace as $replaceKey => $value)
@@ -168,7 +170,7 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface {
                     $intermediateArray[] = ':' . $replaceKey . ' => ' . $value;
             }
             
-            return $key . ' [' . implode(', ', $intermediateArray) . ']';
+            return $key . ' {' . implode(', ', $intermediateArray) . '}';
 	}
 
 	/**
